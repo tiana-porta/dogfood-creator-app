@@ -69,7 +69,7 @@ If the user provides a problem description alongside screenshots, use it to fill
 
 export async function POST(req: NextRequest) {
   try {
-    const { images, account, url, surface, timeline, browserTested, extraContext } = await req.json();
+    const { images, account, url, surface, timeline, browserTested, urgency, extraContext } = await req.json();
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
@@ -106,6 +106,8 @@ export async function POST(req: NextRequest) {
     if (account?.trim())        contextLines.push(`Account/User affected (Q6): ${account.trim()}`);
     if (url?.trim())            contextLines.push(`URL where it happened (Q10): ${url.trim()}`);
     if (timeline?.trim())       contextLines.push(`Timeline — did this just start? (Q4): ${timeline.trim()}`);
+    const urgencyMap: Record<string, string> = { "24h": "High (needs fix within 24 hours)", "5days": "Medium (needs fix within 5 days)" };
+    if (urgency && urgencyMap[urgency]) contextLines.push(`Recommended priority: ${urgencyMap[urgency]}`);
     if (browserTested?.trim())  contextLines.push(`Browser/incognito tested (Q9): ${browserTested.trim()}`);
     if (extraContext?.trim())   contextLines.push(`Additional context: ${extraContext.trim()}`);
 

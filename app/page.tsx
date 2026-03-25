@@ -85,12 +85,15 @@ export default function Home() {
   const [surface, setSurface]                 = useState("");
   const [timeline, setTimeline]               = useState("");
   const [browserTested, setBrowserTested]     = useState("");
+  const [urgency, setUrgency]                 = useState("");
   const [extraContext, setExtraContext]        = useState("");
   const [ticket, setTicket]                   = useState("");
   const [loading, setLoading]                 = useState(false);
   const [error, setError]                     = useState("");
   const [copied, setCopied]                   = useState(false);
   const [dragging, setDragging]               = useState(false);
+
+  const urgencyBlocked = urgency === "now" || urgency === "14days";
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const SUPPORTED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
@@ -144,7 +147,7 @@ export default function Home() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ images, account, url, surface, timeline, browserTested, extraContext }),
+        body: JSON.stringify({ images, account, url, surface, timeline, browserTested, urgency, extraContext }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Generation failed");
@@ -225,6 +228,31 @@ export default function Home() {
               className={inputCls} />
           </div>
 
+          <div>
+            <Label>When does this need to be done?</Label>
+            <select value={urgency} onChange={(e) => { setUrgency(e.target.value); setTicket(""); }} className={selectCls}>
+              <option value="">Select...</option>
+              <option value="now">Now</option>
+              <option value="24h">24 hours from now</option>
+              <option value="5days">5 days from now</option>
+              <option value="14days">14 days from now</option>
+            </select>
+            {urgency === "now" && (
+              <div className="mt-2 bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-sm text-red-400">
+                This needs an incident, not a dogfood. Open one here:{" "}
+                <a href="https://internal.whop.com/engineering/operations/incidents" target="_blank" rel="noreferrer" className="underline">
+                  internal.whop.com/engineering/operations/incidents
+                </a>{" "}
+                (type /inc)
+              </div>
+            )}
+            {urgency === "14days" && (
+              <div className="mt-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-4 py-3 text-sm text-yellow-400">
+                This is not important enough to be a dogfood — please don&apos;t file it so engineering can focus on the highest impact things.
+              </div>
+            )}
+          </div>
+
           <div className="flex gap-3">
             <div className="flex-1">
               <Label hint="Q4">Timeline</Label>
@@ -258,7 +286,7 @@ export default function Home() {
 
           {error && <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-sm text-red-400">{error}</div>}
 
-          <button onClick={generate} disabled={loading || images.length === 0}
+          <button onClick={generate} disabled={loading || images.length === 0 || urgencyBlocked}
             className="w-full bg-white text-zinc-950 font-semibold py-3 rounded-lg hover:bg-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors text-sm">
             {loading ? (
               <span className="flex items-center justify-center gap-2">
@@ -268,7 +296,7 @@ export default function Home() {
                 </svg>
                 Generating...
               </span>
-            ) : "Generate Ticket"}
+            ) : "Generate Dogfood"}
           </button>
         </div>
 
