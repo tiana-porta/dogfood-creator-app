@@ -30,6 +30,7 @@ Error: [Exact text error message in quotes, OR describe visual error state (e.g.
 Browser tested: [Same issue in incognito / Same issue in different browser / Works in incognito / Works in different browser / Not tested — if not provided by AM, write "Not tested"]
 Timeline: [Just started / Ongoing / Started after recent update / Unknown]
 Workaround: [Describe if one exists — or "None, fully blocked"]
+When needed: [Copy exactly from the context provided — e.g. "24 hours from now" or "5 days from now" — or "Not specified" if not provided]
 
 FORMATTING RULES — NON-NEGOTIABLE:
 - Problem: 1-2 sentences. What's broken + impact. Specific and direct. Include exact amounts, IDs, error text.
@@ -106,8 +107,8 @@ export async function POST(req: NextRequest) {
     if (account?.trim())        contextLines.push(`Account/User affected (Q6): ${account.trim()}`);
     if (url?.trim())            contextLines.push(`URL where it happened (Q10): ${url.trim()}`);
     if (timeline?.trim())       contextLines.push(`Timeline — did this just start? (Q4): ${timeline.trim()}`);
-    const urgencyMap: Record<string, string> = { "24h": "High (needs fix within 24 hours)", "5days": "Medium (needs fix within 5 days)" };
-    if (urgency && urgencyMap[urgency]) contextLines.push(`Recommended priority: ${urgencyMap[urgency]}`);
+    const urgencyMap: Record<string, string> = { "24h": "24 hours from now", "5days": "5 days from now" };
+    if (urgency && urgencyMap[urgency]) contextLines.push(`When needed: ${urgencyMap[urgency]}`);
     if (browserTested?.trim())  contextLines.push(`Browser/incognito tested (Q9): ${browserTested.trim()}`);
     if (extraContext?.trim())   contextLines.push(`Additional context: ${extraContext.trim()}`);
 
