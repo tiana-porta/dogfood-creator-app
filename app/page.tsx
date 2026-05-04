@@ -237,6 +237,7 @@ export default function Home() {
               <option value="Backend">Backend</option>
               <option value="Cards">Cards</option>
               <option value="Frontend">Frontend</option>
+              <option value="KYC/KYB">KYC/KYB</option>
               <option value="Mobile - Android">Mobile - Android</option>
               <option value="Mobile - iOS">Mobile - iOS</option>
               <option value="Payments">Payments</option>
