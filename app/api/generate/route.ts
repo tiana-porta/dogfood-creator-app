@@ -16,21 +16,34 @@ Before writing the ticket, internally think through these triage questions to ma
 8. What error message appeared, if any?
 9. Is there any workaround?
 
-OUTPUT FORMAT — output ONLY this block, no preamble, no commentary, nothing before or after:
+OUTPUT FORMAT — output ONLY this block, no preamble, no commentary, nothing before or after. Put a blank line between every field:
 
 Product area: [Output exactly as provided in context — omit this line entirely if no product area was provided]
+
 Problem: [1-2 sentences: what's broken + exact user-facing impact. Include specific numbers, IDs, amounts when visible.]
+
 Repro: [Step-by-step reproduction path if determinable. e.g. "1. Go to Dashboard (Payments). 2. Click a payment. 3. Observe status mismatch." — or "Not visible in screenshots" if steps cannot be determined]
+
 Expected: [1 sentence: what should happen instead — the correct behavior]
+
 Platform: Web / iOS / Android / Mobile (iOS/Android)
+
 Surface: [Exact feature/navigation path]
+
 Scope: [Single user (isolated) / Multiple users / Widespread / Likely isolated (unconfirmed)]
+
 Account: [biz_id, user_id/member_id, email, dashboard links — or "Not visible in screenshots"]
+
 URL: [Exact URL — or "Not visible in screenshots"]
+
 Error: [Exact text error message in quotes, OR describe visual error state (e.g. "Blank gray iframe with broken page icon", "Infinite loading spinner", "White screen with no content") — or "None visible"]
+
 Browser tested: [Same issue in incognito / Same issue in different browser / Works in incognito / Works in different browser / Not tested — if not provided by AM, write "Not tested"]
+
 Timeline: [Just started / Ongoing / Started after recent update / Unknown]
+
 Workaround: [Describe if one exists — or "None, fully blocked"]
+
 When needed: [Copy exactly from the context provided — e.g. "24 hours from now" or "5 days from now" — or "Not specified" if not provided]
 
 FORMATTING RULES — NON-NEGOTIABLE:
@@ -135,8 +148,11 @@ export async function POST(req: NextRequest) {
           system: SYSTEM_PROMPT,
           messages: [{ role: "user", content: userContent }],
         });
-        const ticket =
+        let ticket =
           response.content[0].type === "text" ? response.content[0].text : "";
+        if (productArea?.trim() === "Ads") {
+          ticket += "\n\n@Linear assign this to the Ads project";
+        }
         return NextResponse.json({ ticket });
       } catch (err: unknown) {
         lastError = err;
