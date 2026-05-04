@@ -18,6 +18,7 @@ Before writing the ticket, internally think through these triage questions to ma
 
 OUTPUT FORMAT — output ONLY this block, no preamble, no commentary, nothing before or after:
 
+Product area: [Output exactly as provided in context — omit this line entirely if no product area was provided]
 Problem: [1-2 sentences: what's broken + exact user-facing impact. Include specific numbers, IDs, amounts when visible.]
 Repro: [Step-by-step reproduction path if determinable. e.g. "1. Go to Dashboard (Payments). 2. Click a payment. 3. Observe status mismatch." — or "Not visible in screenshots" if steps cannot be determined]
 Expected: [1 sentence: what should happen instead — the correct behavior]
