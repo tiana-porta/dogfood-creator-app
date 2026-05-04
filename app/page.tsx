@@ -234,8 +234,14 @@ export default function Home() {
             <select value={productArea} onChange={(e) => setProductArea(e.target.value)} className={selectCls}>
               <option value="">Select...</option>
               <option value="Ads">Ads</option>
-              <option value="Payments">Payments</option>
+              <option value="Backend">Backend</option>
               <option value="Cards">Cards</option>
+              <option value="Frontend">Frontend</option>
+              <option value="Mobile - Android">Mobile - Android</option>
+              <option value="Mobile - iOS">Mobile - iOS</option>
+              <option value="Payments">Payments</option>
+              <option value="Payouts">Payouts</option>
+              <option value="Treasury">Treasury</option>
             </select>
           </div>
 
