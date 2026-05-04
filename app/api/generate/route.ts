@@ -70,7 +70,7 @@ If the user provides a problem description alongside screenshots, use it to fill
 
 export async function POST(req: NextRequest) {
   try {
-    const { images, account, url, surface, timeline, browserTested, urgency, extraContext } = await req.json();
+    const { images, account, url, surface, productArea, timeline, browserTested, urgency, extraContext } = await req.json();
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
@@ -103,6 +103,7 @@ export async function POST(req: NextRequest) {
 
     // Build structured context from the targeted fields the AM filled in
     const contextLines: string[] = [];
+    if (productArea?.trim())     contextLines.push(`Product area: ${productArea.trim()}`);
     if (surface?.trim())        contextLines.push(`Surface (use exactly as written, do not change): ${surface.trim()}`);
     if (account?.trim())        contextLines.push(`Account/User affected (Q6): ${account.trim()}`);
     if (url?.trim())            contextLines.push(`URL where it happened (Q10): ${url.trim()}`);

@@ -83,6 +83,7 @@ export default function Home() {
   const [account, setAccount]                 = useState("");
   const [url, setUrl]                         = useState("");
   const [surface, setSurface]                 = useState("");
+  const [productArea, setProductArea]         = useState("");
   const [timeline, setTimeline]               = useState("");
   const [browserTested, setBrowserTested]     = useState("");
   const [urgency, setUrgency]                 = useState("");
@@ -147,7 +148,7 @@ export default function Home() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ images, account, url, surface, timeline, browserTested, urgency, extraContext }),
+        body: JSON.stringify({ images, account, url, surface, productArea, timeline, browserTested, urgency, extraContext }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Generation failed");
@@ -226,6 +227,16 @@ export default function Home() {
             <input type="text" value={surface} onChange={(e) => setSurface(e.target.value)}
               placeholder='e.g. Dashboard (Payments), Checkout / Cancellation Flow...'
               className={inputCls} />
+          </div>
+
+          <div>
+            <Label>Product Area</Label>
+            <select value={productArea} onChange={(e) => setProductArea(e.target.value)} className={selectCls}>
+              <option value="">Select...</option>
+              <option value="Ads">Ads</option>
+              <option value="Payments">Payments</option>
+              <option value="Cards">Cards</option>
+            </select>
           </div>
 
           <div>
